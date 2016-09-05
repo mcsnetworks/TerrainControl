@@ -141,7 +141,8 @@ public final class WorldLoader
     public ForgeWorld demandServerWorld(WorldServer mcWorld)
     {
         ForgeWorld world = this.worldOrNull;
-        if (world == null) {
+        // The following if check removal is to fix the multi-world load issue under Forge.
+        //if (world == null) {
             world = new ForgeWorld(WorldHelper.getName(mcWorld));
 
             TerrainControl.log(LogMarker.INFO, "Loading configs for world \"{}\"....", world.getName());
@@ -149,7 +150,7 @@ public final class WorldLoader
             ServerConfigProvider configs = new ServerConfigProvider(worldConfigsDir, world);
             world.provideConfigs(configs);
             this.worldOrNull = world;
-        }
+        //}
 
         world.provideWorldInstance(mcWorld);
 
