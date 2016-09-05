@@ -1,5 +1,8 @@
 package com.khorn.terraincontrol.forge.generator;
 
+import com.khorn.terraincontrol.TerrainControl;
+import com.khorn.terraincontrol.logging.LogMarker;
+
 import com.khorn.terraincontrol.BiomeIds;
 import com.khorn.terraincontrol.configuration.BiomeConfig;
 import com.khorn.terraincontrol.configuration.WeightedMobSpawnGroup;
@@ -65,11 +68,12 @@ public class BiomeGenCustom extends Biome
 
         // Check if registered earlier
         @SuppressWarnings("unchecked")
-        RegistryNamespaced<ResourceLocation, Biome> registry = ((RegistryNamespaced<ResourceLocation, Biome>) GameRegistry.findRegistry(
-                Biome.class));
+        RegistryNamespaced<ResourceLocation, Biome> registry = ((RegistryNamespaced<ResourceLocation, Biome>) GameRegistry.findRegistry(Biome.class));
         Biome alreadyRegisteredBiome = registry.getObject(registryKey);
+
         if (alreadyRegisteredBiome != null)
         {
+            TerrainControl.log(LogMarker.INFO, "Biome {} already registered, skipping.", biomeNameForRegistry);
             return alreadyRegisteredBiome;
         }
 
