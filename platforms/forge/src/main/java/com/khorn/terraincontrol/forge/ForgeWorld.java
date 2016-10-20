@@ -107,9 +107,17 @@ public class ForgeWorld implements LocalWorld
         if (requestedGenerationId != allocatedGenerationId)
         {
             if (requestedSavedId != 0) {
-                TerrainControl.log(LogMarker.INFO, "Asked to register biome {} with id {}, but succeeded with generation id {} and save id {}", biomeConfig.getName(), requestedGenerationId,allocatedGenerationId ,requestedSavedId);
+                if (allocatedGenerationId == 0) {  //Biome is not registered.
+                    if (requestedGenerationId>255) {
+                        TerrainControl.log(LogMarker.WARN, "Biome registration failed for [" + biomeConfig.getName() + "] and biome ID ["+requestedGenerationId+"].  Cannot register Biome ID greater than 256 currently with TC for Forge.");
+                    } else {                        
+                        TerrainControl.log(LogMarker.WARN, "Biome registration failed for [" + biomeConfig.getName() + "] and biome ID ["+requestedGenerationId+"].  Check configuration files for errors.  Incomplete biome registration will cause unexpected generation results.");
+                    }
+                } else {
+                    TerrainControl.log(LogMarker.INFO, "Asked to register biome [" + biomeConfig.getName() + "] and biome ID ["+requestedGenerationId+"] but registration failed.  Continued with Virtual Biome registration with biome ID [" + allocatedGenerationId +"] with ReplaceToBiomeName of [" + biomeConfig.replaceToBiomeName+"] and id ["+requestedSavedId+"].");
+                }                
             } else {
-                TerrainControl.log(LogMarker.WARN, "Biome {} with id {}, failed to generate an appropriate SaveID for the world files.  Be warned, biome data will not be saved to disk.", biomeConfig.getName(), requestedGenerationId);
+                TerrainControl.log(LogMarker.ERROR, "Biome {} with id {}, failed to generate an appropriate SaveID for the world files.  Be warned, biome data will not be saved to disk.", biomeConfig.getName(), requestedGenerationId);
             }
         }
         LocalBiome localBiome = ForgeBiome.forBiome(biomeConfig, biome);

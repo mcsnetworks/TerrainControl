@@ -27,6 +27,8 @@ public class BiomeGenCustom extends Biome
      * Extension of BiomeProperties so that we are able to access the protected
      * methods.
      */
+    private static boolean showError = true;
+    
     private static class BiomePropertiesCustom extends BiomeProperties
     {
         BiomePropertiesCustom(BiomeConfig biomeConfig)
@@ -73,14 +75,15 @@ public class BiomeGenCustom extends Biome
 
         if (alreadyRegisteredBiome != null)
         {
-            TerrainControl.log(LogMarker.INFO, "Biome {} already registered, skipping.", biomeNameForRegistry);
+            TerrainControl.log(LogMarker.INFO, "Biome [{}] already registered, skipping.", biomeNameForRegistry);
             return alreadyRegisteredBiome;
         }
 
         // No existing biome, create new one
         BiomeGenCustom biome = new BiomeGenCustom(biomeConfig, registryKey, biomeIds);
+        
         if (!biomeIds.isVirtual()) {
-            registry.register(biomeIds.getGenerationId(), biome.getRegistryName(), biome);
+            registry.register(biomeIds.getGenerationId(), biome.getRegistryName(), biome);       
         }
         return biome;
     }
