@@ -106,7 +106,11 @@ public class ForgeWorld implements LocalWorld
 
         if (requestedGenerationId != allocatedGenerationId)
         {
-            TerrainControl.log(LogMarker.INFO, "Asked to register biome {} with id {}, but succeeded with generation id {} and save id {}", biomeConfig.getName(), requestedGenerationId,allocatedGenerationId ,requestedSavedId);
+            if (requestedSavedId != 0) {
+                TerrainControl.log(LogMarker.INFO, "Asked to register biome {} with id {}, but succeeded with generation id {} and save id {}", biomeConfig.getName(), requestedGenerationId,allocatedGenerationId ,requestedSavedId);
+            } else {
+                TerrainControl.log(LogMarker.WARN, "Biome {} with id {}, failed to generate an appropriate SaveID for the world files.  Be warned, biome data will not be saved to disk.", biomeConfig.getName(), requestedGenerationId);
+            }
         }
         LocalBiome localBiome = ForgeBiome.forBiome(biomeConfig, biome);
         this.biomeNames.put(biome.getBiomeName(), localBiome);
